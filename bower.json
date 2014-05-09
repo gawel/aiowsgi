@@ -1,0 +1,16 @@
+{
+  "name": "aiowsgi",
+  "version": "0.1.dev0",
+  "homepage": "https://github.com/gawel/aiowsgi/",
+  "authors": [
+    "Gael Pasgrimaud <gael@gawel.org>"
+  ],
+  "main": [
+  ],
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+      "bootstrap": "3.0.2",
+      "angular": "1.2.1"
+  }
+}
