@@ -71,7 +71,8 @@ def create_server(application, ssl=None, **adj):
 
     .. code-block::
 
-        >>> def application(environ, start_response):
+        >>> @asyncio.coroutine
+        ... def application(environ, start_response):
         ...     pass
         >>> loop = asyncio.get_event_loop()
         >>> srv = create_server(application, loop=loop, port=8000)

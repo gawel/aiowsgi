@@ -99,4 +99,4 @@ class TestServe(TestCase):
         aiowsgi.serve_paste(debug_app, {})
 
     def test_run(self):
-        aiowsgi.run(['', 'waitress.tests.fixtureapps.echo:app'])
+        aiowsgi.run(['', 'tests.apps:aioapp'])
