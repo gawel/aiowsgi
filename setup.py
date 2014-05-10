@@ -53,7 +53,9 @@ setup(
         'test': test_requires,
     },
     entry_points="""
+    [paste.server_runner]
+    main = aiowsgi:serve_paste
     [console_scripts]
-    aiowsgi = aiowsgi.scripts:main
+    aiowsgi-serve = aiowsgi:run
     """,
 )

@@ -11,6 +11,10 @@ aiowsgi - minimalist wsgi server using asyncio
 .. image:: https://pypip.in/d/aiowsgi/badge.png
    :target: https://crate.io/packages/aiowsgi/
 
+Require python 2.7, 3.3+
+
 Source: https://github.com/gawel/aiowsgi/
 
 Docs: https://aiowsgi.readthedocs.org/
+
+You like it ? => https://www.gittip.com/gawel/

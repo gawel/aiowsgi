@@ -8,8 +8,36 @@
 Usage
 =====
 
-.. autoclass:: aiowsgi.WSGIProtocol
-   :members:
+Install the software:
+
+.. code-block:: sh
+
+    $ pip install aiowsgi
+
+Launch the server:
+
+.. code-block:: sh
+
+    $ aiowsgi yourmodule:application
+    $ aiowsgi -h
+
+You can also use a paste factory
+
+.. code-block:: ini
+
+    [server:main]
+    use = egg:aiowsgi
+
+Notice that all options will not work. aiowsgi just use ``waitress`` with a
+custom server factory but not all adjustments are implemented.
+
+
+API
+===
+
+.. autofunction:: aiowsgi.serve
+
+.. autofunction:: aiowsgi.create_server
 
 
 
