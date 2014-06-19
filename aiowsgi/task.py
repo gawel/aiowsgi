@@ -1,4 +1,4 @@
-import asyncio
+from .compat import asyncio
 from waitress.task import reraise
 from waitress.task import hop_by_hop
 from waitress.task import ErrorTask  # NOQA

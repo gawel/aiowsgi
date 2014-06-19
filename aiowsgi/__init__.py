@@ -4,9 +4,9 @@ from __future__ import print_function
 from concurrent.futures import ThreadPoolExecutor
 from waitress.parser import HTTPRequestParser
 from waitress import utilities
+from .compat import asyncio
 from aiowsgi import task
 import waitress
-import asyncio
 import sys
 
 

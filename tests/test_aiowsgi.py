@@ -2,7 +2,7 @@
 from webtest.debugapp import debug_app
 from webtest import http
 from unittest import TestCase
-import asyncio
+from aiowsgi.compat import asyncio
 import aiowsgi
 import socket
 

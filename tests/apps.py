@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import webob
-import asyncio
+from aiowsgi.compat import asyncio
 
 resp = webob.Response('It works!')
 
