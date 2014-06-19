@@ -1,4 +1,4 @@
-0.3 (unreleased)
+0.3 (2014-06-19)
 ================
 
 - Compat with latest trollius
