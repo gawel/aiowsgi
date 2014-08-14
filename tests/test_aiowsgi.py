@@ -62,7 +62,7 @@ class TestHttp(TestCase):
         self.assertFalse(p.request)
 
 
-class Loop(asyncio.AbstractEventLoop):
+class Loop(asyncio.get_event_loop().__class__):
 
     def get_debug(self):
         return True
