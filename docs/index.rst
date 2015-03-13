@@ -39,6 +39,8 @@ API
 
 .. autofunction:: aiowsgi.create_server
 
+.. autoclass:: aiowsgi.thread.WSGIServer
+
 
 
 Indices and tables

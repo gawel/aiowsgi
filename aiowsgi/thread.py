@@ -14,9 +14,27 @@ def get_free_port():
 
 
 class WSGIServer(threading.Thread):
+    """Stopable WSGI server running in a thread (not main thread).
+    Usefull for functionnal testing.
+
+    Usage:
+
+    .. code-block::
+
+        >>> @asyncio.coroutine
+        ... def application(environ, start_response):
+        ...     pass
+        >>> loop = asyncio.get_event_loop()
+        >>> server = WSGIServer(application)
+        >>> server.start()
+        >>> server.stop()
+
+    ``server.url`` will contain the url to request
+    """
 
     def __init__(self, app, host='127.0.0.1', port=None):
         super(WSGIServer, self).__init__()
+        self.server = None
         self.app = app
         _, self.port = port or get_free_port()
         self.host = host
@@ -30,8 +48,12 @@ class WSGIServer(threading.Thread):
         self.server.run()
 
     def stop(self):
-        if self.server.aioserver:
-            self.server.aioserver.close()
-        self.server.close()
+        if self.server is not None:
+            if self.server.aioserver is not None:
+                try:
+                    self.server.aioserver.close()
+                except TypeError:
+                    pass
+            self.server.close()
         self.loop.stop()
         self.join()
