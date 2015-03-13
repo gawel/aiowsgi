@@ -1,4 +1,4 @@
-0.4 (unreleased)
+0.4 (2015-03-13)
 ================
 
 - Added thread.WSGIServer
