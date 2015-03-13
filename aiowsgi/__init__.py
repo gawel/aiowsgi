@@ -31,7 +31,7 @@ class WSGIProtocol(asyncio.Protocol):
         if request.completed or request.error:
             args = [self.server, self.transport, request]
             self.request = None
-            asyncio.async(process(*args))
+            asyncio.async(process(*args), loop=self.loop)
         else:
             self.request = request
 
@@ -44,7 +44,7 @@ class WSGIProtocol(asyncio.Protocol):
 def process(server, transport, request):
     task_class = task.ErrorTask if request.error else task.WSGITask
     t = task_class(Channel(server, transport), request)
-    asyncio.Task(asyncio.coroutine(t.service)())
+    asyncio.Task(asyncio.coroutine(t.service)(), loop=server.loop)
 
 
 class Channel(object):
@@ -75,7 +75,8 @@ def create_server(application, ssl=None, **adj):
         ... def application(environ, start_response):
         ...     pass
         >>> loop = asyncio.get_event_loop()
-        >>> srv = create_server(application, loop=loop, port=8000)
+        >>> srv = create_server(application, loop=loop, port=2345)
+        >>> srv.close()
 
     Then use ``srv.run()`` or ``loop.run_forever()``
     """
@@ -99,6 +100,7 @@ def create_server(application, ssl=None, **adj):
     server.executor = ThreadPoolExecutor(max_workers=adj.threads)
 
     args = dict(app=[application],
+                aioserver=None,
                 adj=adj,
                 loop=loop,
                 server=server,
@@ -113,7 +115,14 @@ def create_server(application, ssl=None, **adj):
         f = loop.create_unix_server
     else:
         f = loop.create_server
-    asyncio.async(f(proto, sock=server.socket, backlog=adj.backlog, ssl=ssl))
+
+    def done(future):
+        result = future.result()
+        server.aioserver = result
+
+    task = asyncio.async(
+        f(proto, sock=server.socket, backlog=adj.backlog, ssl=ssl), loop=loop)
+    task.add_done_callback(done)
     return server
 
 

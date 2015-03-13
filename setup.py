@@ -8,7 +8,7 @@ version = '0.4.dev0'
 
 install_requires = ['waitress', 'webob']
 test_requires = [
-    'nose', 'webtest', 'coverage', 'coveralls',
+    'nose', 'webtest', 'coverage', 'coveralls', 'WSGIProxy2',
 ]
 
 if sys.version_info[:2] < (3, 0):

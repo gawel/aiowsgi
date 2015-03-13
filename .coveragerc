@@ -1,4 +1,6 @@
 [run]
+include =
+    */aiowsgi/*.py
 omit =
     */docs*
     */tests*
@@ -7,7 +9,6 @@ omit =
     */lib/python*
     */lib-python*
     */site-packages*
-    */task.py
 
 [report]
 exclude_lines =
