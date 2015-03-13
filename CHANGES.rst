@@ -1,7 +1,7 @@
 0.4 (unreleased)
 ================
 
-- Nothing changed yet.
+- Added thread.WSGIServer
 
 
 0.3 (2014-06-19)
