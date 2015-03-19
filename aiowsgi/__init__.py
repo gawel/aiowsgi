@@ -29,9 +29,15 @@ class WSGIProtocol(asyncio.Protocol):
             request.received(data[pos:])
 
         if request.completed or request.error:
-            args = [self.server, self.transport, request]
             self.request = None
-            asyncio.async(process(*args), loop=self.loop)
+            task_class = task.ErrorTask if request.error else task.WSGITask
+            channel = Channel(self.server, self.transport)
+            t = task_class(channel, request)
+            asyncio.async(asyncio.coroutine(t.service)(),
+                          loop=self.server.loop)
+            if task_class is task.ErrorTask:
+                channel.done.set_result(True)
+            return channel
         else:
             self.request = request
 
@@ -40,20 +46,15 @@ class WSGIProtocol(asyncio.Protocol):
         cls.loop.run_forever()
 
 
-@asyncio.coroutine
-def process(server, transport, request):
-    task_class = task.ErrorTask if request.error else task.WSGITask
-    t = task_class(Channel(server, transport), request)
-    asyncio.Task(asyncio.coroutine(t.service)(), loop=server.loop)
-
-
 class Channel(object):
 
     def __init__(self, server, transport):
+        self.loop = server.loop
         self.server = server
         self.transport = transport
         self.write = transport.write
         self.addr = transport.get_extra_info('peername')[0]
+        self.done = asyncio.Future(loop=self.loop)
 
     def write_soon(self, data):
         if data:
@@ -86,18 +87,18 @@ def create_server(application, ssl=None, **adj):
         loop = asyncio.get_event_loop()
     if 'ident' not in adj:
         adj['ident'] = 'aiowsgi'
-    if not asyncio.iscoroutine(application) and \
-       not asyncio.iscoroutinefunction(application):
-        if hasattr(application, '__call__'):
-            application = application.__call__
-        application = asyncio.coroutine(application)
+
     server = waitress.create_server(application, _start=False, **adj)
 
     adj = server.adj
 
+    server.executor = None
+    if not asyncio.iscoroutine(application) and \
+       not asyncio.iscoroutinefunction(application):
+        server.executor = ThreadPoolExecutor(max_workers=adj.threads)
+
     server.run = loop.run_forever
     server.loop = loop
-    server.executor = ThreadPoolExecutor(max_workers=adj.threads)
 
     args = dict(app=[application],
                 aioserver=None,

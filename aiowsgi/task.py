@@ -65,20 +65,21 @@ class WSGITask(Task):
 
         # Call the application to handle the request and write a response
         loop = self.channel.server.loop
-        t = asyncio.async(
-            self.channel.server.application(env, start_response),
-            loop=loop)
-        t.add_done_callback(self.aiocallback)
+        if self.channel.server.executor is not None:
+            coro = loop.run_in_executor(
+                self.channel.server.executor,
+                self.channel.server.application, env, start_response)
+        else:
+            coro = self.channel.server.application(env, start_response)
+        t = asyncio.async(coro, loop=loop)
+        t.add_done_callback(self.aiofinish)
 
     def finish(self):
         pass
 
-    def aiocallback(self, f):
-        self.channel.server.loop.run_in_executor(
-            self.channel.server.executor, self.aiofinish, f)
-
     def aiofinish(self, f):
-        self.aioexecute(f.result())
+        app_iter = f.result()
+        self.aioexecute(app_iter)
         Task.finish(self)
         if self.close_on_finish:  # pragma: no cover
             self.channel.transport.close()
@@ -133,3 +134,4 @@ class WSGITask(Task):
         finally:
             if hasattr(app_iter, 'close'):  # pragma: no cover
                 app_iter.close()
+            self.channel.done.set_result(True)

@@ -28,10 +28,11 @@ class Transport(object):
 class TestHttp(TestCase):
 
     loop = asyncio.new_event_loop()
+    app = debug_app
 
     def callFTU(self, **kw):
         kw['host'], kw['port'] = http.get_free_port()
-        s = aiowsgi.create_server(asyncio.coroutine(debug_app.__call__),
+        s = aiowsgi.create_server(self.app,
                                   threads=1, loop=self.loop, **kw).proto()
         s.connection_made(Transport())
         return s
@@ -39,17 +40,17 @@ class TestHttp(TestCase):
     def test_get(self):
         p = self.callFTU()
         t = p.transport
-        p.data_received(b'GET / HTTP/1.1\r\n\r\n')
-        self.loop.run_until_complete(asyncio.sleep(.5, loop=self.loop))
+        channel = p.data_received(b'GET / HTTP/1.1\r\n\r\n')
+        self.loop.run_until_complete(channel.done)
         self.assertFalse(p.request)
         self.assertIn(b'REQUEST_METHOD: GET', t.data)
 
     def test_post(self):
         p = self.callFTU()
         t = p.transport
-        p.data_received(
+        channel = p.data_received(
             b'POST / HTTP/1.1\r\nContent-Length: 1\r\n\r\nX')
-        self.loop.run_until_complete(asyncio.sleep(.5, loop=self.loop))
+        self.loop.run_until_complete(channel.done)
         self.assertFalse(p.request)
         self.assertIn(b'REQUEST_METHOD: POST', t.data)
         self.assertIn(b'CONTENT_LENGTH: 1', t.data)
@@ -58,8 +59,15 @@ class TestHttp(TestCase):
         p = self.callFTU(max_request_body_size=1)
         p.data_received(
             b'POST / HTTP/1.1\r\nContent-Length: 1025\r\n\r\nB')
-        self.loop.run_until_complete(asyncio.sleep(.5, loop=self.loop))
         self.assertFalse(p.request)
+
+
+class TestAsyncHttp(TestHttp):
+
+    @asyncio.coroutine
+    def app(self, *args):
+        resp = list(debug_app.__call__(*args))
+        return resp
 
 
 class Loop(asyncio.get_event_loop().__class__):
