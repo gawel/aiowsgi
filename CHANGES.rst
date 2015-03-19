@@ -1,7 +1,7 @@
 0.5 (unreleased)
 ================
 
-- Nothing changed yet.
+- Use executor iif application is not a coroutine
 
 
 0.4 (2015-03-13)
