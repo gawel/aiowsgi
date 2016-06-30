@@ -1,7 +1,7 @@
 0.6 (unreleased)
 ================
 
-- Nothing changed yet.
+- Small changes to work with latest waitress release (force encoding data to utf8)
 
 
 0.5 (2015-03-19)
