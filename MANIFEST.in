@@ -2,6 +2,8 @@ graft docs
 prune docs/_build
 graft aiowsgi
 graft tests
-include *.rst *.cfg *.ini
+include .coveragerc
+include *.py *.rst *.cfg *.ini
+exclude .installed.cfg
 global-exclude *.pyc
 global-exclude __pycache__
