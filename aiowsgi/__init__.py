@@ -62,6 +62,8 @@ class Channel(object):
                 for v in data:
                     self.write(v)
             else:
+                if not isinstance(data, bytes):
+                    data = data.encode('utf8')
                 self.write(data)
             return len(data)
         return 0
