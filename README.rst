@@ -6,9 +6,9 @@ aiowsgi - minimalist wsgi server using asyncio
   :target: https://travis-ci.org/gawel/aiowsgi
 .. image:: https://coveralls.io/repos/gawel/aiowsgi/badge.png?branch=master
   :target: https://coveralls.io/r/gawel/aiowsgi?branch=master
-.. image:: https://pypip.in/v/aiowsgi/badge.png
+.. image:: https://img.shields.io/pypi/v/aiowsgi.svg
    :target: https://crate.io/packages/aiowsgi/
-.. image:: https://pypip.in/d/aiowsgi/badge.png
+.. image:: https://img.shields.io/pypi/dm/aiowsgi.svg
    :target: https://crate.io/packages/aiowsgi/
 
 Require python 2.7, 3.3+
