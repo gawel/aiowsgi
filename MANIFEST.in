@@ -2,7 +2,7 @@ graft docs
 prune docs/_build
 graft aiowsgi
 graft tests
-include .coveragerc
+include .coveragerc LICENCE
 include *.py *.rst *.cfg *.ini
 exclude .installed.cfg
 global-exclude *.pyc

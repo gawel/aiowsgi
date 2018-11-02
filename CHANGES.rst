@@ -1,7 +1,7 @@
 0.7 (unreleased)
 ================
 
-- Nothing changed yet.
+- remove deprecated asyncio.async calls
 
 
 0.6 (2016-06-30)
