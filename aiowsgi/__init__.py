@@ -33,8 +33,8 @@ class WSGIProtocol(asyncio.Protocol):
             task_class = task.ErrorTask if request.error else task.WSGITask
             channel = Channel(self.server, self.transport)
             t = task_class(channel, request)
-            asyncio.async(asyncio.coroutine(t.service)(),
-                          loop=self.server.loop)
+            asyncio.ensure_future(asyncio.coroutine(t.service)(),
+                                  loop=self.server.loop)
             if task_class is task.ErrorTask:
                 channel.done.set_result(True)
             return channel
@@ -123,7 +123,7 @@ def create_server(application, ssl=None, **adj):
         result = future.result()
         server.aioserver = result
 
-    task = asyncio.async(
+    task = asyncio.ensure_future(
         f(proto, sock=server.socket, backlog=adj.backlog, ssl=ssl), loop=loop)
     task.add_done_callback(done)
     return server

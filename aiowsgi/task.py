@@ -71,7 +71,7 @@ class WSGITask(Task):
                 self.channel.server.application, env, start_response)
         else:
             coro = self.channel.server.application(env, start_response)
-        t = asyncio.async(coro, loop=loop)
+        t = asyncio.ensure_future(coro, loop=loop)
         t.add_done_callback(self.aiofinish)
 
     def finish(self):
