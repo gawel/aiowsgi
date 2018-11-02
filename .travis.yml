@@ -1,14 +1,16 @@
 language: python
-python: 3.5
 sudo: false
+
+matrix:
+  include:
+    - python: 3.5
+    - python: 3.6
+
 install:
-  - pip install tox coveralls
+  - pip install tox-travis coveralls
+
 script:
   - tox
+
 after_success:
   - coveralls
-env:
-  - TOXENV=py27
-  - TOXENV=py33
-  - TOXENV=py34
-  - TOXENV=py35
