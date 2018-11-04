@@ -18,8 +18,8 @@ Launch the server:
 
 .. code-block:: sh
 
-    $ aiowsgi yourmodule:application
-    $ aiowsgi -h
+    $ aiowsgi-serve yourmodule:application
+    $ aiowsgi-serve -h
 
 You can also use a paste factory
 
