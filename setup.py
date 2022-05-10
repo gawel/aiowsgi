@@ -6,9 +6,9 @@ from setuptools import find_packages
 
 version = '0.8.dev0'
 
-install_requires = ['waitress', 'webob']
+install_requires = ['six', 'waitress', 'webob']
 test_requires = [
-    'pytest', 'webtest', 'coverage', 'coveralls', 'WSGIProxy2',
+    'pytest', 'six', 'webtest', 'coverage', 'coveralls', 'WSGIProxy2',
 ]
 
 if sys.version_info[:2] < (3, 0):
