@@ -68,6 +68,9 @@ class Channel(object):
             return len(data)
         return 0
 
+    def check_client_disconnected(self):
+        return self.transport.is_closing()
+
 
 def create_server(application, ssl=None, **adj):
     """Create a wsgi server:
