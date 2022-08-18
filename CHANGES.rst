@@ -1,4 +1,4 @@
-0.8 (unreleased)
+0.8 (2022-08-18)
 ================
 
 - Remove py2 support
