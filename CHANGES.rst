@@ -1,7 +1,9 @@
 0.8 (unreleased)
 ================
 
-- Nothing changed yet.
+- Remove py2 support
+
+- Waitress 2.x compatibility
 
 
 0.7 (2018-11-02)
