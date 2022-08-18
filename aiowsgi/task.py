@@ -1,5 +1,4 @@
 from .compat import asyncio
-from waitress.task import reraise
 from waitress.task import hop_by_hop
 from waitress.task import ErrorTask  # NOQA
 from waitress.task import WSGITask as Task
@@ -26,7 +25,7 @@ class WSGITask(Task):
                         # 1. "service" method in task.py
                         # 2. "service" method in channel.py
                         # 3. "handler_thread" method in task.py
-                        reraise(exc_info[0], exc_info[1], exc_info[2])
+                        raise exc_info[1]
                     else:
                         # As per WSGI spec existing headers must be cleared
                         self.response_headers = []
