@@ -40,8 +40,7 @@ class WSGIServer(threading.Thread):
 
     .. code-block::
 
-        >>> @asyncio.coroutine
-        ... def application(environ, start_response):
+        >>> async def application(environ, start_response):
         ...     start_response('200 OK', [])
         ...     return ['Hello world']
         >>> loop = asyncio.get_event_loop()

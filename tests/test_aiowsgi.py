@@ -64,8 +64,7 @@ class TestHttp(TestCase):
 
 class TestAsyncHttp(TestHttp):
 
-    @asyncio.coroutine
-    def app(self, *args):
+    async def app(self, *args):
         resp = list(debug_app.__call__(*args))
         return resp
 
@@ -75,12 +74,10 @@ class Loop(asyncio.get_event_loop().__class__):
     def get_debug(self):
         return True
 
-    @asyncio.coroutine
-    def create_server(self, *args, **kwargs):
+    async def create_server(self, *args, **kwargs):
         pass
 
-    @asyncio.coroutine
-    def create_unix_server(self, *args, **kwargs):
+    async def create_unix_server(self, *args, **kwargs):
         pass
 
     def call_soon(self, callback, *args, context=None):

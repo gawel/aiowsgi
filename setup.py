@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 from setuptools import setup
 from setuptools import find_packages
 
@@ -10,18 +9,6 @@ install_requires = ['six', 'waitress', 'webob']
 test_requires = [
     'pytest', 'six', 'webtest', 'coverage', 'coveralls', 'WSGIProxy2',
 ]
-
-if sys.version_info[:2] < (3, 0):
-    install_requires.extend([
-        'trollius',
-        'futures',
-    ])
-    test_requires.extend(['mock'])
-elif sys.version_info[:2] < (3, 3):
-    install_requires.append('trollius')
-    test_requires.append('mock')
-elif sys.version_info[:2] < (3, 4):
-    install_requires.append('asyncio')
 
 
 def read(*rnames):
@@ -35,7 +22,6 @@ setup(
     long_description=read('README.rst'),
     classifiers=[
         'Intended Audience :: Developers',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
     ],
