@@ -83,8 +83,11 @@ class Loop(asyncio.get_event_loop().__class__):
     def create_unix_server(self, *args, **kwargs):
         pass
 
-    def call_soon(self, callback, *args):
-        callback(*args)
+    def call_soon(self, callback, *args, context=None):
+        if context:
+            context.run(callback, *args)
+        else:
+            callback(*args)
 
     def run_forever(self):
         pass
