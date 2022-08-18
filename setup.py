@@ -3,7 +3,7 @@ import os
 from setuptools import setup
 from setuptools import find_packages
 
-version = '0.8'
+version = '0.9.dev0'
 
 install_requires = ['six', 'waitress', 'webob']
 test_requires = [
